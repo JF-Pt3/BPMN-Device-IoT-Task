@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+     
+       <extension
+             point="org.eclipse.ui.editors">
+          <editor
+                class="org.imixs.report.editors.ReportEditor"
+                default="true"
+                extensions="imixs-report"
+                icon="icons/imixs-report.gif"
+                id="org.imixs.report.editors.reporteditor"
+                name="Imixs Report Editor">
+          </editor>
+       </extension>
+     
+     
+    
+     
+
+</plugin>

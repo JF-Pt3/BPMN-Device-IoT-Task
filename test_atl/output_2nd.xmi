@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<result>
+  <xmi2xmi Baud_rate_final="9600" task="Task_1"/>
+  <xmi2xmi SSID="iot" task="Task_1"/>
+  <xmi2xmi SSID_Pass="123456789" task="Task_1"/>
+  <xmi2xmi Wifi_Lib="WiFiNINA.h" task="Task_1"/>
+  <xmi2xmi Http_lib="ArduinoHttpClient.h" task="Task_1"/>
+  <xmi2xmi Port1="8080" task="Task_1"/>
+  <xmi2xmi Port2="4999" task="Task_1"/>
+  <xmi2xmi Server_Address="192.168.1.138" task="Task_1"/>
+  <xmi2xmi Imu_lib="Arduino_LSM6DS3.h" task="Task_1"/>
+</result>

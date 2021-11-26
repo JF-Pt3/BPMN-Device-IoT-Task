@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><xmi:XMI xmlns:dcxmi="http://www.omg.org/spec/DD/20100524/DC-XMI" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dixmi="http://www.omg.org/spec/DD/20100524/DI-XMI" xmlns:imixs="http://www.imixs.org/bpmn2" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndixmi="http://www.omg.org/spec/BPMN/20100524/DI-XMI" xmlns:xmi="http://schema.omg.org/spec/XMI" xmlns:bpmn2xmi="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns="BPMN20" xmi:version="2.0">
+    <DeviceTask id="Task_6"/>
+    <DeviceTask id="Task_1">
+        <baud_rate_param value="9600" task="Task_1"/>
+        <ssid_param value="iot" task="Task_1"/>
+        <ssid_pass_param value="123456789" task="Task_1"/>
+        <wifi_lib_param value="WiFiNINA.h" task="Task_1"/>
+        <http_lib_param value="ArduinoHttpClient.h" task="Task_1"/>
+        <port1_param value="8080" task="Task_1"/>
+        <port2_param value="4999" task="Task_1"/>
+        <server_address_param value="192.168.1.138" task="Task_1"/>
+        <imu_lib_param value="Arduino_LSM6DS3.h" task="Task_1"/>
+    </DeviceTask>
+    <DeviceTask id="Task_2"/>
+    <DeviceTask id="Task_5"/>
+    <DeviceTask id="Task_3"/>
+    <DeviceTask id="Task_7"/>
+</xmi:XMI>

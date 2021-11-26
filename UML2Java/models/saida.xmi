@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.mda="http://org/mda">
+    <org.mda:Package name="org.mda">
+        <task name="Task_1">
+            <fields name="Baud_rate_final" value="9600"/>
+            <fields name="SSID" value="oi"/>
+            <fields name="SSID_Pass" value="ola"/>
+            <fields name="Wifi_Lib" value="WiFiNINA.h"/>
+            <fields name="Http_lib" value="ArduinoHttpClient.h"/>
+            <fields name="Port1" value="8080"/>
+            <fields name="Port2" value="4999"/>
+            <fields name="Server_Address" value="192.168.1.12"/>
+            <fields name="Imu_lib" value="Arduino_LSM6DS3.h"/>
+        </task>
+    </org.mda:Package>
+</xmi:XMI>

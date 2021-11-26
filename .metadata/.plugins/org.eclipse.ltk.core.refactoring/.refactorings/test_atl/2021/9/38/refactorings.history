@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move &apos;ticket.bpmn.bpmn2xmi&apos; to &apos;test_atl&apos;" description="Move &apos;ticket.bpmn.bpmn2xmi&apos; to &apos;test_atl&apos;" destination="/test_atl" element1="/org.imixs.eclipse.bpmn2/res/ticket.bpmn.bpmn2xmi" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="1" stamp="1632432616271" updateReferences="true"/>
+</session>

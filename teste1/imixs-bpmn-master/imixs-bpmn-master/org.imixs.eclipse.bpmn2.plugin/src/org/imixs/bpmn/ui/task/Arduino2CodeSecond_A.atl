@@ -1,0 +1,160 @@
+query Arduino2Code = Arduino!ArduinoClass.allInstances()->
+	select(e | e.oclIsTypeOf(Arduino!ArduinoClass))->
+	collect(x | x.toString().writeTo('OutputCode/' +
+     'OutputCode' + '.ino'));
+
+helper context Arduino!ArduinoClass def: visibility() : String =
+if self.isPublic then
+'public '
+else
+'private '
+endif;
+
+helper context Arduino!ArduinoClass def: modifierAbstract() : String =
+if self.isAbstract then
+'abstract '
+else
+''
+endif;
+
+helper context Arduino!Type def : fullName() : String = self.name;
+
+helper context Arduino!ArduinoClass def : fullName() : String =
+if self.package.oclIsUndefined() then self.name else self.package.name + '.' + self.name endif;
+
+helper context Arduino!ArduinoClass def: toString() : String =
+if self.package.oclIsUndefined() then '\n\n' else self.fields->iterate(i; acc : String = '' |
+acc +i.libs()
+)  +'\n\n'+ self.fields->iterate(i; acc : String = '' |
+acc +   i.wifi_config()
+) endif + self.fields->iterate(i; acc : String = '' |
+acc + i.var_init() +  i.ports_adrress()
+)  +'\nWiFiClient wifi;'+'\nWiFiClient client2;'+'\nHttpClient client = HttpClient(wifi, serverAddress, port);'+
+
+'\n\nvoid setup('+
+self.superClasses->
+iterate( sc; acc : String = '' |
+    acc +
+    if acc = '' then
+       ' extends '
+    else
+       ', '
+    endif +
+    sc.fullName()
+) + ')'+' {\n' +
+--Fields Definition
+self.fields->iterate(i; acc : String = '' |
+acc + i.baud_rate_config() 
+)+ '\n\n\twhile(status != WL_CONNECTED) {
+    \tSerial.print("Attempting to connect to WPA SSID: ");
+    \tSerial.println(ssid);
+    \tstatus = WiFi.begin(ssid, pass); 
+    \tdelay(5000);
+  \t}
+  
+  \tSerial.print("SSID: ");
+  \tSerial.println(WiFi.SSID());
+  \tIPAddress ip = WiFi.localIP();
+  \tIPAddress gateway = WiFi.gatewayIP();
+  \tSerial.print("IP Address: ");
+  \tSerial.println(ip);'+
+  
+  '\n\t////********ports pinMode-START***************\n'+
+  self.fields->iterate(i; acc : String = '' |	acc + i.ports_initialize())
+  +'\n\n\t//********ports pinMode-END***************'+'
+  \n\tSerial.println("Connecting to server...");
+  //If we get a connection, tell us
+  \tif(client2.connect(serverAddress, port2)) {
+    \tSerial.println("Connection Success!");
+    \tclient2.println();
+  \t}'+'\n\n\n}' +'\n\nvoid loop(){\n\n\n\n//PLEASE,NOW COMPLETE WITH YOUR OWN CODE\n\n\n}';
+
+helper context Arduino!Modifier def: visibility() : String =
+if self.isPublic then
+'public '
+else
+'private '
+endif +
+if self.isStatic then
+'static '
+else
+	''
+endif +
+if self.isFinal then
+'final '
+else 
+	''
+endif;
+
+
+helper context Arduino!Field def: libs() : String =
+
+
+if self.name='Wifi_Lib' then '#include '+ '<'+ self.value + '>\n' else '' endif +
+if self.name='Http_lib' then '#include '+ '<'+ self.value + '>' else '' endif;
+
+
+helper context Arduino!Field def: var_init() : String =
+if self.name='A0' then '\nint varA0 '+'= '+ self.name +';'  else '' endif+
+if self.name='A1' then '\nint varA1 '+'= '+ self.name +';'  else '' endif+
+if self.name='A2' then '\nint varA2 '+'= '+ self.name +';'  else '' endif+
+if self.name='A3' then '\nint varA3 '+'= '+ self.name +';'  else '' endif+
+if self.name='A4' then '\nint varA4 '+'= '+ self.name +';'  else '' endif+
+if self.name='A5' then '\nint varA5 '+'= '+ self.name +';'  else '' endif+
+if self.name='D0' then '\nconst int varD0 '+'= '+ '0' +';'  else '' endif+
+if self.name='D1' then '\nconst int varD1 '+'= '+ '1' +';'  else '' endif+
+if self.name='D2' then '\nconst int varD2 '+'= '+ '2' +';'  else '' endif+
+if self.name='D3' then '\nconst int varD3 '+'= '+ '3' +';'  else '' endif+
+if self.name='D4' then '\nconst int varD4 '+'= '+ '4' +';'  else '' endif+
+if self.name='D5' then '\nconst int varD5 '+'= '+ '5' +';'  else '' endif+
+if self.name='D6' then '\nconst int varD6 '+'= '+ '6' +';'  else '' endif+
+if self.name='D7' then '\nconst int varD7 '+'= '+ '7'+';'  else '' endif+
+if self.name='D8' then '\nconst int varD8 '+'= '+ '8' +';'  else '' endif+
+if self.name='D9' then '\nconst int varD9 '+'= '+ '9' +';'  else '' endif+
+if self.name='D10' then '\nconst int varD10 '+'= '+ '10' +';'  else '' endif+
+if self.name='D11' then '\nconst int varD11 '+'= '+ '11' +';'  else '' endif+
+if self.name='D12' then '\nconst int varD12 '+'= '+ '12' +';'  else '' endif+
+if self.name='D13' then '\nconst int varD13 '+'= '+ '13' +';'  else '' endif;
+
+
+helper context Arduino!Field def: ports_adrress() : String =
+if self.name='Port1' then '\nint '+ 'port' +'='+ self.value +';'  else '' endif+
+if self.name='Port2' then  '\nint  '+ 'port2' +'='+ self.value +';'  else '' endif+
+if self.name='Button_Green' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Button_Red' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Server_Address' then  '\nconst char '+ self.name +'[]'+ '='+'"'+ self.value + '"' + ';'+'\n'  else '' endif;
+
+
+helper context Arduino!Field def: ports_initialize() : String =
+if self.name='A0' then '\n\tpinMode('+ 'varA0'+','+ self.value +')'+';'  else '' endif+
+if self.name='A1' then '\n\tpinMode('+ 'varA1'+','+ self.value +')'+';'  else '' endif+
+if self.name='A2' then '\n\tpinMode('+ 'varA2'+','+ self.value +')'+';'  else '' endif+
+if self.name='A3' then '\n\tpinMode('+ 'varA3'+','+ self.value +')'+';'  else '' endif+
+if self.name='A4' then '\n\tpinMode('+ 'varA4'+','+ self.value +')'+';'  else '' endif+
+if self.name='A5' then '\n\tpinMode('+ 'varA5'+','+ self.value +')'+';'  else '' endif+
+if self.name='D0' then '\n\tpinMode('+ 'varD0'+','+ self.value +')'+';'  else '' endif+
+if self.name='D1' then '\n\tpinMode('+ 'varD1'+','+ self.value +')'+';'  else '' endif+
+if self.name='D2' then '\n\tpinMode('+ 'varD2'+','+ self.value +')'+';'  else '' endif+
+if self.name='D3' then '\n\tpinMode('+ 'varD3'+','+ self.value +')'+';'  else '' endif+
+if self.name='D4' then '\n\tpinMode('+ 'varD4'+','+ self.value +')'+';'  else '' endif+
+if self.name='D5' then '\n\tpinMode('+ 'varD5'+','+ self.value +')'+';'  else '' endif+
+if self.name='D6' then '\n\tpinMode('+ 'varD6'+','+ self.value +')'+';'  else '' endif+
+if self.name='D7' then '\n\tpinMode('+ 'varD7'+','+ self.value +')'+';'  else '' endif+
+if self.name='D8' then '\n\tpinMode('+ 'varD8'+','+ self.value +')'+';'  else '' endif+
+if self.name='D9' then '\n\tpinMode('+ 'varD9'+','+ self.value +')'+';'  else '' endif+
+if self.name='D10' then '\n\tpinMode('+ 'varD10'+','+ self.value +')'+';'  else '' endif+
+if self.name='D11' then '\n\tpinMode('+ 'varD11'+','+ self.value +')'+';'  else '' endif+
+if self.name='D12' then '\n\tpinMode('+ 'varD12'+','+ self.value +')'+';'  else '' endif+
+if self.name='D13' then '\n\tpinMode('+ 'varD13'+','+ self.value +')'+';'  else '' endif;
+
+
+
+
+
+
+helper context Arduino!Field def: baud_rate_config() : String =
+if self.name='Baud_rate_final' then '\tSerial.begin(' + self.value +');' else '' endif ;
+
+helper context Arduino!Field def: wifi_config() : String =
+if self.name='SSID' then '\nchar '+ self.name +'[]'+ '='+'"'+ self.value + '"' + ';'  else '' endif+
+if self.name='SSID_Pass' then '\nchar '+ self.name +'[]'+ '='+'"'+ self.value + '"' + ';'+'\n'  else '' endif;

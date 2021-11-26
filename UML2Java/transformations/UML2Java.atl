@@ -1,0 +1,147 @@
+-- @nsURI UML=http://www.eclipse.org/uml2/5.0.0/UML
+-- @path Java=/JavaMetamodel/model/Java.ecore
+
+module UML2Java;
+create OUT : Java from IN : UML;
+
+helper def : primitiveTypesMap : Map(String,Java!PrimitiveType) = Map{};
+
+helper context UML!Namespace def: getExtendedName() : String =
+	if self.namespace.oclIsUndefined() then
+		''
+	else if self.namespace.oclIsKindOf(UML!Model) then
+		''
+	else
+		self.namespace.getExtendedName() + '.'
+	endif endif + self.name;
+
+helper context UML!Type def: getType() : Java!Type =
+    if self.oclIsUndefined() 
+	then OclUndefined
+	else 
+		if self.oclIsKindOf(UML!PrimitiveType)
+		then thisModule.primitiveTypesMap->get(self.name) 
+		else self
+		endif
+	endif;
+
+rule P2P {
+	from e : UML!Package (e.oclIsTypeOf(UML!Package))
+	to out : Java!Package (
+		name <- e.getExtendedName()
+	)
+}
+
+rule C2C {
+	from e : UML!Class
+	to out : Java!JavaClass (
+		name <- e.name,
+		isAbstract <- e.isAbstract,
+		isPublic <- if e.visibility='public' then true else false endif,
+		package <- e.namespace,
+		superClasses <- e.generalization->collect( g | g.general )
+	)
+}
+
+rule D2P {
+	from e : UML!DataType
+	to out : Java!PrimitiveType (
+		name <- e.name,
+		package <- e.namespace
+	)
+}
+
+rule T2T {
+	from e : UML!Type(e.oclIsKindOf(UML!PrimitiveType))
+	to out : Java!PrimitiveType (
+		name <- e.name,
+		package <- e.namespace
+	)
+}
+
+rule A2F {
+	from e : UML!Property
+	to out : Java!Field (
+		name <- e.name,
+		isStatic <- e.isStatic,
+		isPublic <- if e.visibility=#public then true else false endif,
+		--isFinal <- e.isFinal(),
+		owner <- e.owner,
+		type <- if e.type.oclIsUndefined() then OclUndefined else e.type.getType() endif 
+	)
+}
+
+rule O2M {
+	from e : UML!Operation
+	to out : Java!Method (
+		name <- e.name,
+		isStatic <- e.isStatic,
+		isPublic <- if e.visibility=#public then true else false endif,
+		owner <- e.owner,
+		type <- if e.ownedParameter->select(x|x.direction=#return)->first().oclIsUndefined() 
+		        then OclUndefined 
+				else e.ownedParameter->select(x|x.direction=#return)->first().type.getType()
+				endif,
+		parameters <- e.ownedParameter->select(x|x.direction<>#return)->collect( par | thisModule.PM2JP( par ) )
+	)
+}
+
+rule PM2JP(p : UML!Parameter)
+{
+    to out : Java!MethodParameter
+    (
+         name <- p.name,
+		 owner <- p.owner,
+		 type <- if p.type.oclIsUndefined() then OclUndefined else p.type.getType() endif 
+    ) do {
+		out;
+	}
+}
+
+rule E2E
+{
+    from e : UML!Enumeration ( UML!Property.allInstances()->exists( p |
+        p.class.oclIsTypeOf( UML!Class ) and p.type = e ) )
+    to je : Java!Enumeration
+    (
+        name <- e.name,
+        package <- e.package,
+        enumerationLiterals <- e.ownedLiteral->collect( el | thisModule.EL2EL(el))
+    )
+}
+
+rule EL2EL(el : UML!EnumerationLiteral)
+{
+    to out : Java!EnumerationLiteral
+    (
+        name <- el.name
+    ) do {
+		out;
+	}
+}
+
+rule makeType(type : UML!Type) {
+	to t : Java!Type (
+		name <- type.name
+	) do {
+		t;
+	}
+}
+
+entrypoint rule Init() {
+	to s : Java!PrimitiveType (
+		name <- 'String'
+	),
+	i : Java!PrimitiveType(
+		name <- 'Integer'
+	),
+	b : Java!PrimitiveType(
+		name <- 'Boolean'
+	)
+	do {
+		thisModule.primitiveTypesMap <- thisModule.primitiveTypesMap->including(s.name,s)->including(i.name,i)->including(b.name,b);
+		s;
+		i;
+		b;
+	}
+}

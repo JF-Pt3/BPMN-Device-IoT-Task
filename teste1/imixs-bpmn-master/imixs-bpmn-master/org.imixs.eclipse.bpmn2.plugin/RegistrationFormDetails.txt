@@ -1,0 +1,9 @@
+NAME: = jose
+I'D: = 123
+AGE(years): = 12
+GENDER: = MALE
+CITY: = dd
+STATE: = asqssq
+ZIP: = 1234
+PROFESSION: = STUDENT
+GPA: = 3

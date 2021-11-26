@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.m2m.atl.adt.launching.atlTransformation">
+    <stringAttribute key="ATL File Name" value="/UML2Java/transformations/Java2CodeSecond.atl"/>
+    <stringAttribute key="ATL VM" value="EMF-specific VM"/>
+    <booleanAttribute key="IS_REFINING" value="false"/>
+    <mapAttribute key="Input">
+        <mapEntry key="IN" value="Java"/>
+    </mapAttribute>
+    <mapAttribute key="Libs"/>
+    <mapAttribute key="Model Handler">
+        <mapEntry key="Java" value="EMF"/>
+    </mapAttribute>
+    <mapAttribute key="ModelType">
+        <mapEntry key="IN" value="MODELINPUT"/>
+        <mapEntry key="Java" value="METAMODELINPUT"/>
+    </mapAttribute>
+    <mapAttribute key="Options">
+        <mapEntry key="OPTION_CLEAR" value="false"/>
+        <mapEntry key="OPTION_CONTENT_TYPE" value="false"/>
+        <mapEntry key="OPTION_DERIVED" value="true"/>
+        <mapEntry key="allowInterModelReferences" value="false"/>
+        <mapEntry key="printExecutionTime" value="false"/>
+        <mapEntry key="step" value="false"/>
+        <mapEntry key="supportUML2Stereotypes" value="false"/>
+    </mapAttribute>
+    <listAttribute key="OrderedInput">
+        <listEntry value="IN"/>
+    </listAttribute>
+    <listAttribute key="OrderedOutput"/>
+    <mapAttribute key="Output"/>
+    <mapAttribute key="Path">
+        <mapEntry key="IN" value=""/>
+        <mapEntry key="Java" value=""/>
+    </mapAttribute>
+    <listAttribute key="Superimpose"/>
+</launchConfiguration>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.mda.java="http://org/mda/java">
+    <org.mda.java:Package name="org.mda.personal">
+        <task name="Task2">
+            <fields name="Baud_rate_final" value="9600"/>
+            <fields name="SSID" value="a"/>
+            <fields name="SSID_Pass" value="b"/>
+            <fields name="Wifi_Lib" value="#include &lt;WiFiNINA.h&gt;"/>
+            <fields name="Http_lib" value="&lt;ArduinoHttpClient.h&gt;"/>
+            <fields name="Port1" value="c"/>
+            <fields name="Port2" value="d"/>
+            <fields name="Server_Address" value="e"/>
+            <fields name="Button_Green" value="f"/>
+            <fields name="Button_Red" value="g"/>
+            <fields name="LDR_Pin" value="i"/>
+            <fields name="LED_Green" value="h"/>
+        </task>
+        <task name="Task3"/>
+    </org.mda.java:Package>
+</xmi:XMI>

@@ -1,0 +1,106 @@
+
+import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.eclipse.m2m.atl.drivers.emf4atl.AtlEMFModelHandler; 
+import org.eclipse.m2m.atl.engine.vm.AtlLauncher;
+import org.eclipse.m2m.atl.engine.vm.AtlModelHandler;
+import org.eclipse.m2m.atl.engine.vm.ModelLoader;
+import org.eclipse.m2m.atl.engine.vm.nativelib.ASMModel;
+
+import org.eclipse.m2m.atl.core.ATLCoreException;
+import org.eclipse.m2m.atl.core.IModel;
+import org.eclipse.m2m.atl.core.IReferenceModel;
+import org.eclipse.m2m.atl.core.emf.EMFExtractor;
+import org.eclipse.m2m.atl.core.emf.EMFInjector;
+import org.eclipse.m2m.atl.core.emf.EMFModel;
+import org.eclipse.m2m.atl.core.emf.EMFModelFactory;
+import org.eclipse.m2m.atl.core.emf.EMFReferenceModel;
+import org.eclipse.m2m.atl.core.launch.ILauncher;
+import org.eclipse.m2m.atl.engine.emfvm.launch.EMFVMLauncher;
+
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+
+
+
+
+
+public class Families2PersonsProgrammaticlaunch {
+    
+    public static void main(String[] args) {
+    	try {
+    		//AtlModelHandler and ModelLoader init
+    		AtlModelHandler.registerDefaultHandler("EMF", new AtlEMFModelHandler());   		
+	    	AtlModelHandler amh = AtlModelHandler.getDefault("EMF");
+	    	ModelLoader ml = amh.createModelLoader();
+	    	
+	    	//stores metamodels and models
+	    	Map models = new HashMap();
+	    	//used to locate metamodels,models and trasformation file
+	    	URL url;
+	    	//C:\Users\JF\Desktop\Experiencias_ATL\Exemplo_Familias\ATL\Families2Persons
+	    	//URL where Families.ecore (input metamodel) is located
+	    	url = new URL("file:C:/Users/JF/Desktop/Automatic_ATL/Experiencias_ATL/Exemplo_Familias/ATL/Families2Persons/Families.ecore");	    	
+	    	//load Families metamodel (the name is the same in the ATL file  [ex.: ATL CODE-> create OUT : Persons from IN : *Families*;])
+	    	ASMModel metamodel_families = ml.loadModel("Families", ml.getMOF(), url.openStream());
+	    	//store   
+	    	models.put("Families", metamodel_families);
+	    	
+	    	//URL where Persons.ecore (output metamodel) is located
+	    	url = new URL("file:C:/Users/JF/Desktop/Automatic_ATL/Experiencias_ATL/Exemplo_Familias/ATL/Families2Persons/Persons.ecore");
+	    	//load Persons metamodel (the name is the same in the ATL file  [ex.: ATL CODE-> create OUT : *Persons* from IN : Families;])
+	    	ASMModel metamodel_persons = ml.loadModel("Persons", ml.getMOF(), url.openStream());
+	    	//store 
+	    	models.put("Persons", metamodel_persons);
+	    	
+	    	//URL where sample-Families.xmi (input model) is located
+	    	url = new URL("file:/C:/Users/JF/Desktop/Automatic_ATL/Experiencias_ATL/Exemplo_Familias/ATL/Families2Persons/sample-Families.xmi");
+	    	//load Families model (the name is the same in the ATL file  [ex.: ATL CODE-> create OUT : Persons from *IN* : Families;])
+	    	ASMModel model_families = ml.loadModel("IN", metamodel_families, url.openStream());
+	    	//store 
+	    	models.put("IN", model_families);
+	    	
+	    	//URL where sample-Persons.xmi (output model) is located
+	    	url = new URL("file:/C:/Users/JF/Desktop/Automatic_ATL/Experiencias_ATL/Exemplo_Familias/ATL/Families2Persons/sample-Persons.xmi");
+	    	//create a new output model (the name is the same in the ATL file  [ex.: ATL CODE-> create *OUT* : Persons from IN : Families;])
+	    	ASMModel outputModel = ml.newModel("OUT", "C:/Users/JF/Desktop/Experiencias_ATL/Exemplo_Familias/ATL/Families2Persons/sample-Persons.xmi", metamodel_persons);
+	    	//store 
+	    	models.put("OUT", outputModel);
+	    	
+	    	//URL where Families2Persons.asm (transformation .asm) is located
+	    	url = new URL("file:/C:/Users/JF/Desktop/Automatic_ATL/Experiencias_ATL/Exemplo_Familias/ATL/Families2Persons/Families2Persons.asm");
+	    	//get an Atllauncher
+	    	AtlLauncher mylauncher = AtlLauncher.getDefault();
+	    	//execute the transformation (in this case we pass just the map "models")
+	    	mylauncher.launch(url, Collections.EMPTY_MAP, models, Collections.EMPTY_MAP, Collections.EMPTY_LIST, Collections.EMPTY_MAP);
+	    	
+	    	//save the outputModel in "file://C:/Documents and Settings/Administrator/workspace2/Families2Persons/sample-Persons.xmi"
+	    	outputModel.getModelLoader().save(outputModel, "file://C:/Users/JF/Desktop/Automatic_ATL/Experiencias_ATL/Exemplo_Familias/ATL/Families2Persons/sample-Persons.xmi");
+	    	
+	    	//once executed this file make a refresh on the destination folder
+    	}
+    	catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	
+    	
+    }
+	
+}

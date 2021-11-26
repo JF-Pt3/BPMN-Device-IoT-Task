@@ -1,0 +1,710 @@
+-- @path BPMN20=C:/Users/JF/Desktop/asd/test_atl/BPMN20.ecore
+-- @path Arduino=C:/Users/JF/Desktop/asd/test_atl/arduino.ecore
+
+module Transform;
+
+create OUT: Arduino from IN: BPMN20;
+
+
+helper context BPMN20!Parameters def: isbaud_rate(): Boolean =
+	if not self.DeviceTask_baud_rate.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isSSID(): Boolean =
+	if not self.DeviceTask_ssid.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+
+helper context BPMN20!Parameters def: isSSIDPASS(): Boolean =
+	if not self.DeviceTask_ssid_pass.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isWIFILIB(): Boolean =
+	if not self.DeviceTask_wifi_lib.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isHTTPLIB(): Boolean =
+	if not self.DeviceTask_http_lib.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+
+helper context BPMN20!Parameters def: isIMULIB(): Boolean =
+	if not self.DeviceTask_imu_lib.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isPORT1(): Boolean =
+	if not self.DeviceTask_port1.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isPORT2(): Boolean =
+	if not self.DeviceTask_port2.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isSERVERADDRESS(): Boolean =
+	if not self.DeviceTask_Server_Address.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isBUTTONGREEN(): Boolean =
+	if not self.DeviceTask_Button_Green.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isBUTTONRED(): Boolean =
+	if not self.DeviceTask_Button_red.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isLDRPIN(): Boolean =
+	if not self.DeviceTask_Ldr_Pin.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isLEDGREEN(): Boolean =
+	if not self.DeviceTask_Led_Green.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+
+helper context BPMN20!Parameters def: isA0(): Boolean =
+	if not self.DeviceTask_a0.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isA1(): Boolean =
+	if not self.DeviceTask_a1.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isA2(): Boolean =
+	if not self.DeviceTask_a2.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isA3(): Boolean =
+	if not self.DeviceTask_a3.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isA4(): Boolean =
+	if not self.DeviceTask_a4.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isA5(): Boolean =
+	if not self.DeviceTask_a5.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD0(): Boolean =
+	if not self.DeviceTask_d0.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD1(): Boolean =
+	if not self.DeviceTask_d1.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD2(): Boolean =
+	if not self.DeviceTask_d2.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD3(): Boolean =
+	if not self.DeviceTask_d3.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD4(): Boolean =
+	if not self.DeviceTask_d4.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isD5(): Boolean =
+	if not self.DeviceTask_d5.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD6(): Boolean =
+	if not self.DeviceTask_d6.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD7(): Boolean =
+	if not self.DeviceTask_d7.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD8(): Boolean =
+	if not self.DeviceTask_d8.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isD9(): Boolean =
+	if not self.DeviceTask_d9.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isD10(): Boolean =
+	if not self.DeviceTask_d10.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isD11(): Boolean =
+	if not self.DeviceTask_d11.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+helper context BPMN20!Parameters def: isD12(): Boolean =
+	if not self.DeviceTask_d12.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+helper context BPMN20!Parameters def: isD13(): Boolean =
+	if not self.DeviceTask_d13.oclIsUndefined() then
+		true
+	else
+		false
+	endif;
+
+
+rule bpmn2arduino {
+	from
+		s: BPMN20!Parameters (s.isbaud_rate())
+	to
+		t: Arduino!xmi2xmi (
+			Baud_rate_final <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+
+rule bpmn2arduino2 {
+	from
+		s: BPMN20!Parameters (s.isSSID())
+	to
+		t: Arduino!xmi2xmi (
+			SSID <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+
+rule bpmn2arduino3 {
+	from
+		s: BPMN20!Parameters (s.isSSIDPASS())
+	to
+		t: Arduino!xmi2xmi (
+			SSID_Pass <- s.value,
+			task <- s.task
+		)
+		
+		
+}
+
+
+rule bpmn2arduino4 {
+	from
+		s: BPMN20!Parameters (s.isWIFILIB())
+	to
+		t: Arduino!xmi2xmi (
+			Wifi_Lib <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+rule bpmn2arduino5 {
+	from
+		s: BPMN20!Parameters (s.isHTTPLIB())
+	to
+		t: Arduino!xmi2xmi (
+			Http_lib <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+
+rule bpmn2arduino6 {
+	from
+		s: BPMN20!Parameters (s.isPORT1())
+	to
+		t: Arduino!xmi2xmi (
+			Port1 <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+
+rule bpmn2arduino7 {
+	from
+		s: BPMN20!Parameters (s.isPORT2())
+	to
+		t: Arduino!xmi2xmi (
+			Port2 <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+
+rule bpmn2arduino8 {
+	from
+		s: BPMN20!Parameters (s.isSERVERADDRESS())
+	to
+		t: Arduino!xmi2xmi (
+			Server_Address <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+
+rule bpmn2arduino9 {
+	from
+		s: BPMN20!Parameters (s.isBUTTONGREEN())
+	to
+		t: Arduino!xmi2xmi (
+			Button_Green <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+rule bpmn2arduino10 {
+	from
+		s: BPMN20!Parameters (s.isBUTTONRED())
+	to
+		t: Arduino!xmi2xmi (
+			Button_Red <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+
+rule bpmn2arduino11 {
+	from
+		s: BPMN20!Parameters (s.isLDRPIN())
+	to
+		t: Arduino!xmi2xmi (
+			LDR_Pin <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+
+
+
+
+rule bpmn2arduino12 {
+	from
+		s: BPMN20!Parameters (s.isLEDGREEN())
+	to
+		t: Arduino!xmi2xmi (
+			LED_Green <- s.value,
+			task <- s.task
+			
+		)
+		
+}
+
+
+rule bpmn2arduino13 {
+	from
+		s: BPMN20!Parameters (s.isA0())
+	to
+		t: Arduino!xmi2xmi (
+			A0 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+rule bpmn2arduino14 {
+	from
+		s: BPMN20!Parameters (s.isA1())
+	to
+		t: Arduino!xmi2xmi (
+			A1 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+rule bpmn2arduino15 {
+	from
+		s: BPMN20!Parameters (s.isA2())
+	to
+		t: Arduino!xmi2xmi (
+			A2 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+rule bpmn2arduino16 {
+	from
+		s: BPMN20!Parameters (s.isA3())
+	to
+		t: Arduino!xmi2xmi (
+			A3 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+rule bpmn2arduino17 {
+	from
+		s: BPMN20!Parameters (s.isA4())
+	to
+		t: Arduino!xmi2xmi (
+			A4 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino18 {
+	from
+		s: BPMN20!Parameters (s.isA5())
+	to
+		t: Arduino!xmi2xmi (
+			A5 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+rule bpmn2arduino19 {
+	from
+		s: BPMN20!Parameters (s.isD0())
+	to
+		t: Arduino!xmi2xmi (
+			D0 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino20 {
+	from
+		s: BPMN20!Parameters (s.isD1())
+	to
+		t: Arduino!xmi2xmi (
+			D1 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+rule bpmn2arduino21 {
+	from
+		s: BPMN20!Parameters (s.isD2())
+	to
+		t: Arduino!xmi2xmi (
+			D2 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino22 {
+	from
+		s: BPMN20!Parameters (s.isD3())
+	to
+		t: Arduino!xmi2xmi (
+			D3 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino23 {
+	from
+		s: BPMN20!Parameters (s.isD4())
+	to
+		t: Arduino!xmi2xmi (
+			D4 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino24 {
+	from
+		s: BPMN20!Parameters (s.isD5())
+	to
+		t: Arduino!xmi2xmi (
+			D5 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino25 {
+	from
+		s: BPMN20!Parameters (s.isD6())
+	to
+		t: Arduino!xmi2xmi (
+			D6 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino26 {
+	from
+		s: BPMN20!Parameters (s.isD7())
+	to
+		t: Arduino!xmi2xmi (
+			D7 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino27 {
+	from
+		s: BPMN20!Parameters (s.isD8())
+	to
+		t: Arduino!xmi2xmi (
+			D8 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino28 {
+	from
+		s: BPMN20!Parameters (s.isD9())
+	to
+		t: Arduino!xmi2xmi (
+			D9 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino29 {
+	from
+		s: BPMN20!Parameters (s.isD10())
+	to
+		t: Arduino!xmi2xmi (
+			D10 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino30 {
+	from
+		s: BPMN20!Parameters (s.isD11())
+	to
+		t: Arduino!xmi2xmi (
+			D11 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino31 {
+	from
+		s: BPMN20!Parameters (s.isD12())
+	to
+		t: Arduino!xmi2xmi (
+			D12 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+rule bpmn2arduino32 {
+	from
+		s: BPMN20!Parameters (s.isD13())
+	to
+		t: Arduino!xmi2xmi (
+			D13 <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+
+
+
+
+rule bpmn2arduino33 {
+	from
+		s: BPMN20!Parameters (s.isIMULIB())
+	to
+		t: Arduino!xmi2xmi (
+			Imu_lib <- s.value,
+			task <- s.task
+			
+		)
+		
+		
+}
+

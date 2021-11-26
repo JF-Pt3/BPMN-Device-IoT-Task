@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 4 elements to &apos;org.imixs.eclipse.bpmn2/src/org.imixs.bpmn.ui.task&apos;&#x0D;&#x0A;- Original project: &apos;UML2Java&apos;&#x0D;&#x0A;- Destination element: &apos;org.imixs.eclipse.bpmn2/src/org.imixs.bpmn.ui.task&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     Arduino2CodeSecond.asm&#x0D;&#x0A;     Arduino2CodeSecond.atl&#x0D;&#x0A;     Arduino2Code.asm&#x0D;&#x0A;     Arduino2Code.atl" description="Copy files" destination="=org.imixs.eclipse.bpmn2/src&lt;org.imixs.bpmn.ui.task" element1="transformations/Arduino2CodeSecond.asm" element2="transformations/Arduino2CodeSecond.atl" element3="transformations/Arduino2Code.asm" element4="transformations/Arduino2Code.atl" files="4" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1636110447050" units="0" version="1.0"/>
+</session>

@@ -1,0 +1,164 @@
+query Arduino2Code = Arduino!ArduinoClass.allInstances()->
+	select(e | e.oclIsTypeOf(Arduino!ArduinoClass))->
+	collect(x | x.toString().writeTo('UML2Java/' +
+     x.name + '.ino'));
+
+helper context Arduino!ArduinoClass def: visibility() : String =
+if self.isPublic then
+'public '
+else
+'private '
+endif;
+
+helper context Arduino!ArduinoClass def: modifierAbstract() : String =
+if self.isAbstract then
+'abstract '
+else
+''
+endif;
+
+helper context Arduino!Type def : fullName() : String = self.name;
+
+helper context Arduino!ArduinoClass def : fullName() : String =
+if self.package.oclIsUndefined() then self.name else self.package.name + '.' + self.name endif;
+
+helper context Arduino!ArduinoClass def: toString() : String =
+if self.package.oclIsUndefined() then '\n\n' else self.fields->iterate(i; acc : String = '' |
+acc 
+)  +'\n\n'+ self.fields->iterate(i; acc : String = '' |
+acc 
+) endif +'\n\n'  + self.fields->iterate(i; acc : String = '' |
+acc + i.var_init() +  i.ports_adrress()
+)  +
+
+'\n\nvoid setup('+
+self.superClasses->
+iterate( sc; acc : String = '' |
+    acc +
+    if acc = '' then
+       ' extends '
+    else
+       ', '
+    endif +
+    sc.fullName()
+) + ')'+' {\n' +
+--Fields Definition
+self.fields->iterate(i; acc : String = '' |
+acc +  i.ports_initialize()
+)+ '\n\n}'+'\n\nvoid loop(){\n\n\n}';
+
+helper context Arduino!Modifier def: visibility() : String =
+if self.isPublic then
+'public '
+else
+'private '
+endif +
+if self.isStatic then
+'static '
+else
+	''
+endif +
+if self.isFinal then
+'final '
+else 
+	''
+endif;
+
+
+helper context Arduino!Field def: libs() : String =
+
+
+if self.name='Wifi_Lib' then '#include '+ '<'+ self.value + '>\n' else '' endif +
+if self.name='Http_lib' then '#include '+ '<'+ self.value + '>' else '' endif;
+
+
+helper context Arduino!Field def: var_init() : String =
+if self.name='A0' then '\nint varA0 '+'= '+ self.name +';'  else '' endif+
+if self.name='A1' then '\nint varA1 '+'= '+ self.name +';'  else '' endif+
+if self.name='A2' then '\nint varA2 '+'= '+ self.name +';'  else '' endif+
+if self.name='A3' then '\nint varA3 '+'= '+ self.name +';'  else '' endif+
+if self.name='A4' then '\nint varA4 '+'= '+ self.name +';'  else '' endif+
+if self.name='A5' then '\nint varA5 '+'= '+ self.name +';'  else '' endif+
+if self.name='D0' then '\nconst int varD0 '+'= '+ '0' +';'  else '' endif+
+if self.name='D1' then '\nconst int varD1 '+'= '+ '1' +';'  else '' endif+
+if self.name='D2' then '\nconst int varD2 '+'= '+ '2' +';'  else '' endif+
+if self.name='D3' then '\nconst int varD3 '+'= '+ '3' +';'  else '' endif+
+if self.name='D4' then '\nconst int varD4 '+'= '+ '4' +';'  else '' endif+
+if self.name='D5' then '\nconst int varD5 '+'= '+ '5' +';'  else '' endif+
+if self.name='D6' then '\nconst int varD6 '+'= '+ '6' +';'  else '' endif+
+if self.name='D7' then '\nconst int varD7 '+'= '+ '7'+';'  else '' endif+
+if self.name='D8' then '\nconst int varD8 '+'= '+ '8' +';'  else '' endif+
+if self.name='D9' then '\nconst int varD9 '+'= '+ '9' +';'  else '' endif+
+if self.name='D10' then '\nconst int varD10 '+'= '+ '10' +';'  else '' endif+
+if self.name='D11' then '\nconst int varD11 '+'= '+ '11' +';'  else '' endif+
+if self.name='D12' then '\nconst int varD12 '+'= '+ '12' +';'  else '' endif+
+if self.name='D13' then '\nconst int varD13 '+'= '+ '13' +';'  else '' endif;
+
+
+helper context Arduino!Field def: ports_adrress() : String =
+if self.name='Port1' then '\nint '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Port2' then  '\nint  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Button_Green' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Button_Red' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='LED_Green' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='LDR_Pin' then  '\nint  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Server_Address' then  '\nconst char '+ self.name +'[]'+ '='+'"'+ self.value + '"' + ';'+'\n'  else '' endif;
+
+
+helper context Arduino!Field def: ports_initialize() : String =
+if self.name='A0' then '\npinMode('+ 'varA0'+','+ self.value +')'+';'  else '' endif+
+if self.name='A1' then '\npinMode('+ 'varA1'+','+ self.value +')'+';'  else '' endif+
+if self.name='A2' then '\npinMode('+ 'varA2'+','+ self.value +')'+';'  else '' endif+
+if self.name='A3' then '\npinMode('+ 'varA3'+','+ self.value +')'+';'  else '' endif+
+if self.name='A4' then '\npinMode('+ 'varA4'+','+ self.value +')'+';'  else '' endif+
+if self.name='A5' then '\npinMode('+ 'varA5'+','+ self.value +')'+';'  else '' endif+
+if self.name='D0' then '\npinMode('+ 'varD0'+','+ self.value +')'+';'  else '' endif+
+if self.name='D1' then '\npinMode('+ 'varD1'+','+ self.value +')'+';'  else '' endif+
+if self.name='D2' then '\npinMode('+ 'varD2'+','+ self.value +')'+';'  else '' endif+
+if self.name='D3' then '\npinMode('+ 'varD3'+','+ self.value +')'+';'  else '' endif+
+if self.name='D4' then '\npinMode('+ 'varD4'+','+ self.value +')'+';'  else '' endif+
+if self.name='D5' then '\npinMode('+ 'varD5'+','+ self.value +')'+';'  else '' endif+
+if self.name='D6' then '\npinMode('+ 'varD6'+','+ self.value +')'+';'  else '' endif+
+if self.name='D7' then '\npinMode('+ 'varD7'+','+ self.value +')'+';'  else '' endif+
+if self.name='D8' then '\npinMode('+ 'varD8'+','+ self.value +')'+';'  else '' endif+
+if self.name='D9' then '\npinMode('+ 'varD9'+','+ self.value +')'+';'  else '' endif+
+if self.name='D10' then '\npinMode('+ 'varD10'+','+ self.value +')'+';'  else '' endif+
+if self.name='D11' then '\npinMode('+ 'varD11'+','+ self.value +')'+';'  else '' endif+
+if self.name='D12' then '\npinMode('+ 'varD12'+','+ self.value +')'+';'  else '' endif+
+if self.name='D13' then '\npinMode('+ 'varD13'+','+ self.value +')'+';'  else '' endif;
+
+helper context Arduino!Field def: toString2() : String =
+'\t' + self.visibility() +
+if self.type.oclIsUndefined() then 'String' else self.type.fullName() endif + ' ' + self.name + ';\n'+
+
+if self.name='apellidos' then self.value else 'ferrari' endif;
+
+helper context Arduino!Field def: toString3() : String =
+'\t' + self.visibility() +
+if self.type.oclIsUndefined() then 'String' else self.type.fullName() endif + ' ' + self.name + ';\n'+
+
+if self.name='apellidos' then 'ola' else 'VW' endif;
+
+
+helper context Arduino!Field def: toString4() : String =
+if self.name='Baud_rate_final' then '\tSerial.begin(' + self.value +');' else '' endif +
+if self.name= 'DataParam' then '\nint dataParam =' +self.value else '' endif;
+
+helper context Arduino!Method def: toString() : String =
+'\t' + self.visibility() +
+if self.type.oclIsUndefined() then 'void' else self.type.fullName() endif
++ ' ' + self.name + '(' +
+self.parameters->iterate(i; acc : String = '' |
+acc +
+if acc = '' then
+''
+else
+', '
+endif +
+i.toString()
+) +
+')\n' + '\t{\n\t\t   //TODO METHOD \n\t}\n';
+
+helper context Arduino!MethodParameter def: toString() : String =
+if self.type.oclIsUndefined() then 'String' else self.type.fullName() endif
++ ' ' + self.name;

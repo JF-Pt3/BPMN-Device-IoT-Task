@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><xmi:XMI xmi:version="2.0" xmlns:dcxmi="http://www.omg.org/spec/DD/20100524/DC-XMI" xmlns:dimi="http://www.omg.org/spec/DD/20100524/DI" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:imixs="http://www.imixs.org/bpmn2" xmlns:dixmi="http://www.omg.org/spec/DD/20100524/DI-XMI" xmlns:bpmndixmi="http://www.omg.org/spec/BPMN/20100524/DI-XMI" xmlns:xmi="http://schema.omg.org/spec/XMI" xmlns:bpmn2xmi="http://www.omg.org/spec/BPMN/20100524/MODEL-XMI" xmlns:di="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:bpmndid="http://www.omg.org/spec/DD/20100524/DC">   
+    <bpmn2:Definitions id="Definitions_1" exporter="org.eclipse.bpmn2.modeler.core" exporterVersion="1.5.3.Final-v20210519-2007-B1" targetNamespace="http://org.eclipse.bpmn2/default/process">
+        <rootElements xmi:type="bpmn2:Process" id="process_1" name="Default Process" isExecutable="false">
+            <flowElements xmi:type="bpmn2:StartEvent" id="StartEvent_1" name="Start Event 1" outgoing="SequenceFlow_2"/>
+            <flowElements xmi:type="bpmn2:Task" id="Task_1" name="Task 1" incoming="SequenceFlow_2" outgoing="SequenceFlow_3"/>
+            <flowElements xmi:type="bpmn2:Task" id="Task_2" name="Task 2" incoming="SequenceFlow_3" outgoing="SequenceFlow_4"/>
+            <flowElements xmi:type="bpmn2:SequenceFlow" id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="Task_1"/>
+            <flowElements xmi:type="bpmn2:SequenceFlow" id="SequenceFlow_3" sourceRef="Task_1" targetRef="Task_2"/>
+            <flowElements xmi:type="bpmn2:EndEvent" id="EndEvent_2" name="End Event 2" incoming="SequenceFlow_4"/>
+            <flowElements xmi:type="bpmn2:SequenceFlow" id="SequenceFlow_4" sourceRef="Task_2" targetRef="EndEvent_2"/>
+        </rootElements>
+        <diagrams xmi:type="bpmndid:BPMNDiagram" id="BPMNDiagram_1" name="Default Process Diagram">
+            <plane xmi:type="bpmndid:BPMNPlane" id="BPMNPlane_1" bpmnElement="process_1">
+                <planeElement xmi:type="di:BPMNShape" id="BPMNShape_1" bpmnElement="StartEvent_1">
+                    <bounds xmi:type="dc:Bounds" height="36.0" width="36.0" x="100.0" y="100.0"/>
+                    <label xmi:type="di:BPMNLabel" id="BPMNLabel_1" labelStyle="BPMNLabelStyle_1">
+                        <bounds xmi:type="dc:Bounds" height="34.0" width="80.0" x="78.0" y="136.0"/>
+                    </label>
+                </planeElement>
+                <planeElement xmi:type="di:BPMNShape" id="BPMNShape_Task_1" isExpanded="true" bpmnElement="Task_1">
+                    <bounds xmi:type="dc:Bounds" height="50.0" width="110.0" x="235.0" y="95.0"/>
+                    <label xmi:type="di:BPMNLabel" id="BPMNLabel_2" labelStyle="BPMNLabelStyle_1">
+                        <bounds xmi:type="dc:Bounds" height="17.0" width="44.0" x="268.0" y="111.0"/>
+                    </label>
+                </planeElement>
+                <planeElement xmi:type="di:BPMNShape" id="BPMNShape_Task_2" isExpanded="true" bpmnElement="Task_2">
+                    <bounds xmi:type="dc:Bounds" height="50.0" width="110.0" x="433.0" y="100.0"/>
+                    <label xmi:type="di:BPMNLabel" id="BPMNLabel_3" labelStyle="BPMNLabelStyle_1">
+                        <bounds xmi:type="dc:Bounds" height="17.0" width="44.0" x="466.0" y="116.0"/>
+                    </label>
+                </planeElement>
+                <planeElement xmi:type="di:BPMNShape" id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_2">
+                    <bounds xmi:type="dc:Bounds" height="36.0" width="36.0" x="622.0" y="102.0"/>
+                    <label xmi:type="di:BPMNLabel" id="BPMNLabel_6" labelStyle="BPMNLabelStyle_1">
+                        <bounds xmi:type="dc:Bounds" height="17.0" width="79.0" x="601.0" y="138.0"/>
+                    </label>
+                </planeElement>
+                <planeElement xmi:type="di:BPMNEdge" id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_1" targetElement="BPMNShape_Task_1">
+                    <label xmi:type="di:BPMNLabel" id="BPMNLabel_4"/>
+                </planeElement>
+                <planeElement xmi:type="di:BPMNEdge" id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_Task_1" targetElement="BPMNShape_Task_2">
+                    <label xmi:type="di:BPMNLabel" id="BPMNLabel_5"/>
+                </planeElement>
+                <planeElement xmi:type="di:BPMNEdge" id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_Task_2" targetElement="BPMNShape_EndEvent_1">
+                    <label xmi:type="di:BPMNLabel" id="BPMNLabel_7"/>
+                </planeElement>
+            </plane>
+            <labelStyle xmi:type="di:BPMNLabelStyle" id="BPMNLabelStyle_1">
+                <font xmi:type="dc:Font" name="arial" size="9.0"/>
+            </labelStyle>
+        </diagrams>
+    </bpmn2:Definitions>
+</xmi:XMI>

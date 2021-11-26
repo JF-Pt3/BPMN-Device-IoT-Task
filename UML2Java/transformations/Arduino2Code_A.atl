@@ -1,0 +1,277 @@
+query Arduino2Code_A = Arduino!ArduinoClass.allInstances()->
+	select(e | e.oclIsTypeOf(Arduino!ArduinoClass))->
+	collect(x | x.toString().writeTo('OutputCode/' +
+     'OutputCode' + '.ino'));
+
+helper context Arduino!ArduinoClass def: visibility() : String =
+if self.isPublic then
+'public '
+else
+'private '
+endif;
+
+helper context Arduino!ArduinoClass def: modifierAbstract() : String =
+if self.isAbstract then
+'abstract '
+else
+''
+endif;
+
+helper context Arduino!Type def : fullName() : String = self.name;
+
+helper context Arduino!ArduinoClass def : fullName() : String =
+if self.package.oclIsUndefined() then self.name else self.package.name + '.' + self.name endif;
+
+helper context Arduino!ArduinoClass def: toString() : String =
+if self.package.oclIsUndefined() then '\n\n' else self.fields->iterate(i; acc : String = '' |
+acc +  i.libs()
+)  +'\n\n'+ self.fields->iterate(i; acc : String = '' |
+acc +  i.wifi_config()
+) endif +'\n\n'  + self.fields->iterate(i; acc : String = '' |
+acc +  i.ports_adrress()
+)  +'\nconst int ButtonGREEN = 2;\nconst int ButtonRED = 3;\nconst int ledGREEN =  12;\nint buttonStateGreen = 0;\nint buttonStateRed = 0;\nint counter=0;\nint first_time=0;\nbool ciclo=true;\nString recebe="";\nWiFiClient wifi;\nWiFiClient client2;\nHttpClient client = HttpClient(wifi, Server_Address, Port1);\nint Value_int=550;\nString postData="Hello";\nint status = WL_IDLE_STATUS;\nint valor=0;\nint control=0;'+
+
+'\n\nvoid setup('+
+self.superClasses->
+iterate( sc; acc : String = '' |
+    acc +
+    if acc = '' then
+       ' extends '
+    else
+       ', '
+    endif +
+    sc.fullName()
+) + ')'+' {\n' +
+--Fields Definition
+self.fields->iterate(i; acc : String = '' |
+acc +  i.toString4()
+) +'\n\twhile (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to WPA SSID: ");
+    Serial.println(SSID);
+    status = WiFi.begin(SSID, SSID_Pass); 
+    delay(5000);
+  }
+  
+  Serial.print("SSID: ");
+  Serial.println(WiFi.SSID());
+  IPAddress ip = WiFi.localIP();
+  IPAddress gateway = WiFi.gatewayIP();
+  Serial.print("IP Address: ");
+  Serial.println(ip);  
+  
+  // initialize the pushbutton pin as an input:
+  pinMode(ButtonGREEN, INPUT);
+  pinMode(ButtonRED, INPUT);    
+  pinMode(ledGREEN, OUTPUT);
+  
+  Serial.println("Connecting to server...");
+  //If we get a connection, tell us
+  if(client2.connect(Server_Address, Port2)) {
+    Serial.println("Connection Success!");
+    client2.println();
+  }  
+  if (!IMU.begin()) {
+    Serial.println("Failed to initialize IMU!");
+    while (1);
+  } 
+  
+  '
+
+
++
+
+
+
+'\n}\n\n'+'void contacta_imixs(int TASK_ID_int,int EVENT_ID_int,int Value_int,String variavel){
+		first_time=1;
+        Serial.println("making POST request");      
+
+		String value = String(Value_int);
+		String TASK_ID = String(TASK_ID_int);
+		String EVENT_ID = String(EVENT_ID_int);
+      
+        postData = "<document xmlns:xsi=\\"http://www.w3.org/2001/XMLSchema-instance\\" xmlns:xs=\\"http://www.w3.org/2001/XMLSchema\\"><item name=\\"$modelversion\\"><value xsi:type=\\"xs:string\\">1.0.0</value></item><item name=\\"$taskid\\"><value xsi:type=\\"xs:int\\">"+TASK_ID+"</value></item><item name=\\"$eventid\\"><value xsi:type=\\"xs:int\\">"+EVENT_ID+"</value></item><item name=\\""+variavel+"\\"><value xsi:type=\\"xs:int\\">"+value+"</value></item></document>";
+      
+
+		client.beginRequest();
+		client.post("/api/workflow/workitem");    
+		client.sendBasicAuth("admin","adminadmin");       
+		client.sendHeader("Connection","keep-alive");
+		client.sendHeader("Content-Type","application/xml");
+		client.sendHeader("Content-Length", postData.length()); 
+		client.sendHeader("Accept","application/xml");      
+		client.beginBody(); 
+		client.print(postData);
+		client.endRequest();
+	   
+		  // read the status code and body of the response
+		int statusCode = client.responseStatusCode();
+		String response = client.responseBody();
+
+		/*Serial.print("Status code: ");
+		Serial.println(statusCode);
+		Serial.print("Response: ");
+		Serial.println(response);*/
+		client.flush();
+		client.stop();
+	
+}'+ '\nvoid loop(){
+	
+		float aux_x_axis=0;
+		float aux_y_axis=0;
+		float aux_z_axis=0;
+
+		buttonStateGreen = digitalRead(ButtonGREEN);
+        buttonStateRed = digitalRead(ButtonRED);
+        float xAcc, yAcc, zAcc;
+		float xGyr, yGyr, zGyr;
+		
+		if (IMU.accelerationAvailable()) {
+			IMU.readAcceleration(xAcc, yAcc, zAcc);
+
+			Serial.println("Acceleration");
+			Serial.print(fabs(xAcc));
+			Serial.println("\\t");
+			Serial.print(fabs(yAcc));
+			Serial.println("\\t");
+			Serial.println(fabs(zAcc));
+		}
+	delay(1500);
+  
+
+	   if ((buttonStateGreen == HIGH)&&(control==0)) {//SE BOTÃO VERDE PRESSIONADO ARRANCA O PROCESSO 
+		
+			contacta_imixs(1500,10,1,"_trigger");//ENVIA A MENSAGEM "1" PARA O ENGINE(1500 É O ID DA TASK,10 É O ID DO EVENTO, _TRIGGER É A IDENTIFICAÇÃO DA MENSAGEM
+			control=1;
+			first_time++;
+	   }
+
+        if ((buttonStateRed == HIGH)) { // BOTÃO VERMELHO->FAZ STOP AO PROCESSO
+   
+			contacta_imixs(1800,16,0,"_avalia");
+			control=0;
+			Serial.print("\\n->>>adeus-ate a proxima!");
+        }
+	   
+	   if(control){
+    
+			delay(500);  
+			int contador=0; 
+
+			while(client2.available()){ //VERIFICA SE O ENGINE ESTÁ A ENVIAR INFORMAÇÃO,Port1O 4999     
+			  char c = client2.read();
+			  recebe+= c;
+			}
+
+            Serial.println("->VALOR: \\n"+recebe);
+	        Serial.print(first_time);			
+			valor = recebe.toInt();
+			recebe=""; 
+
+			if((valor == 1)||(first_time != 0)){//SE O ENGINE ENVIAR O CARACTER "1"(CICLO DO EVENTO RETROACÇÃO OU SE FOI PRESSIONADO O BOTÃO VERDE,VERIFICA-SE O ESTADO DO LDR
+				
+				IMU.readAcceleration(xAcc, yAcc, zAcc);
+				
+				if(fabs(yAcc) < 0.1){					
+					if(!client2.connected()){
+						client2.stop();
+						digitalWrite(ledGREEN, LOW);
+						contacta_imixs(1800,12,1,"_avalia");// SE LUZ ABAIXO DESTE THRESHOLD,VOLTA À TASK ARDUINO_TASK
+					}
+				}
+			    else
+				  if(fabs(yAcc) > 0.12){
+					if(!client2.connected()){
+						client2.stop();						
+						contacta_imixs(1800,13,2,"_avalia");// SE LUZ ACIMA DESTE THRESHOLD,SEGUE PARA A TASK TURN_LED_ON
+						//TURN_LED_ON chama o evento led_Green_on.Este evento obriga o engine a enviar o caracter "2" para o Arduino
+					}
+				  }
+			
+				valor=0;
+                first_time=0;
+				client2.connect(Server_Address,4999);     
+			
+			}
+			
+			if(valor == 2){
+				if(!client2.connected()){
+					client2.stop();
+					digitalWrite(ledGREEN, HIGH);	//Arduino recebe o caracter "2" do engine,obrigando-o a ligar o led verde					
+					delay(2500);
+					digitalWrite(ledGREEN, LOW);
+					Serial.print("\\n->>>LIGA LED!!!");
+					
+						
+				}
+				valor=0;
+				client2.connect(Server_Address,4999);     
+			}		
+	   }
+}';
+
+helper context Arduino!Modifier def: visibility() : String =
+if self.isPublic then
+'public '
+else
+'private '
+endif +
+if self.isStatic then
+'static '
+else
+	''
+endif +
+if self.isFinal then
+'final '
+else 
+	''
+endif;
+
+
+helper context Arduino!Field def: libs() : String =
+
+
+if self.name='Wifi_Lib' then '#include '+ '<'+ self.value + '>\n' else '' endif +
+if self.name='Http_lib' then '#include '+ '<'+ self.value + '>\n' else '' endif+
+if self.name='Imu_lib' then '#include '+ '<'+ self.value + '>' else '' endif;
+
+
+helper context Arduino!Field def: wifi_config() : String =
+if self.name='SSID' then '\nchar '+ self.name+'[]'+'='+'"'+ self.value +'"' +';'  else '' endif+
+if self.name='SSID_Pass' then  '\nchar '+ self.name+'[]'+'='+ '"'+ self.value +'"' +';'+'\n'  else '' endif;
+
+
+helper context Arduino!Field def: ports_adrress() : String =
+if self.name='Port1' then '\nint '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Port2' then  '\nint  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Button_Green' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Button_Red' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='LED_Green' then  '\nconst int  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='LDR_Pin' then  '\nint  '+ self.name+'='+ self.value +';'  else '' endif+
+if self.name='Server_Address' then  '\nconst char '+ self.name +'[]'+ '='+'"'+ self.value + '"' + ';'+'\n'  else '' endif;
+
+
+
+
+helper context Arduino!Field def: toString4() : String =
+if self.name='Baud_rate_final' then '\tSerial.begin(' + self.value +');' else '' endif +
+if self.name= 'DataParam' then '\nint dataParam =' +self.value else '' endif;
+
+helper context Arduino!Method def: toString() : String =
+'\t' + self.visibility() +
+if self.type.oclIsUndefined() then 'void' else self.type.fullName() endif
++ ' ' + self.name + '(' +
+self.parameters->iterate(i; acc : String = '' |
+acc +
+if acc = '' then
+''
+else
+', '
+endif +
+i.toString()
+) +
+')\n' + '\t{\n\t\t   //TODO METHOD \n\t}\n';
+
+helper context Arduino!MethodParameter def: toString() : String =
+if self.type.oclIsUndefined() then 'String' else self.type.fullName() endif
++ ' ' + self.name;

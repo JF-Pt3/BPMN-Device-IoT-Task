@@ -1,0 +1,13 @@
+dialog.ItemDefinition.itemSubjectRef.x=160
+dialog.ItemDefinition.itemSubjectRef.y=160
+dialog.ItemDefinition.tab=1
+dialog.Task.height=1030
+dialog.Task.tab=1
+dialog.Task.width=1920
+dialog.Task.x=2660
+dialog.Task.y=270
+do.core.validation=true
+eclipse.preferences.version=1
+list.InputSet.expanded=true
+list.Property.expanded=true
+list.ResourceRole.expanded=true
