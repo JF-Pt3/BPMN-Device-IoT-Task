@@ -15,5 +15,7 @@
 
 ![alt text](https://github.com/JF-Pt3/BPMN-Device-IoT-Task/blob/master/system_archit.jpg)
 
+#### Short video demonstrating the solution:
 
+[Device Task](https://www.youtube.com/watch?v=037_fr-PbxQ)
 
